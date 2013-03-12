@@ -1,0 +1,6 @@
+0001-GCC-4.7.patch
+0002-Use-Debian-external.patch
+0003-Use-Debian-GLEW.patch
+0004-Use-Debian-eigen3.patch
+0005-Use-proper-rpath.patch
+0006-FHS-for-plugins-and-shaders.patch

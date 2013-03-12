@@ -1,7 +1,0 @@
-From: Teemu Ikonen <tpikonen@gmail.com>
-Subject: Fix FTBFS with GCC-4.7
-X-git-branch: p/gcc47
-
-Closes: #667276
-
-Thanks to Matej Vela for the patch.

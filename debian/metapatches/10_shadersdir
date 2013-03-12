@@ -1,3 +1,0 @@
-From: Teemu Ikonen <tpikonen@gmail.com>
-Subject: Hardcode shadersDir to the correct path in Debian in various plugins
-X-git-branch: p/shadersdir

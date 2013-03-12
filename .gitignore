@@ -1,0 +1,6 @@
+#quilt
+.pc
+*.rej
+
+#vim
+*.swp

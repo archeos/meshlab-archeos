@@ -1,0 +1,40 @@
+From: Romain Janvier <romain.janvier@hotmail.fr>
+Date: Wed, 13 Mar 2013 14:54:43 +0100
+Subject: GCC 4.7
+
+---
+ vcglib/wrap/gl/trimesh.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/vcglib/wrap/gl/trimesh.h
++++ b/vcglib/wrap/gl/trimesh.h
+@@ -1003,7 +1003,7 @@ void Crease(MESH_TYPE &m, typename MESH_
+ 			}
+ 		}
+ 
+-	m.vert.math::Swap(newvert);
++	m.vert.Swap(newvert);
+ 	m.vn=m.vert.size();
+ }
+ 
+--- a/vcglib/wrap/ply/plystuff.h
++++ b/vcglib/wrap/ply/plystuff.h
+@@ -75,6 +75,7 @@ using namespace vcg;
+ #define pb_close  _close
+ #define DIR_SEP "\\"
+ #else
++#include <unistd.h>
+ #define pb_mkdir(n)  mkdir(n,0755)
+ #define pb_access access
+ #define pb_stat   stat
+--- a/meshlab/src/meshlabplugins/decorate_base/colorhistogram.h
++++ b/meshlab/src/meshlabplugins/decorate_base/colorhistogram.h
+@@ -40,7 +40,7 @@ public:
+ 
+   //! Reset histogram data.
+   void Clear() {
+-    this->::Clear();
++    Histogram<ScalarType>::Clear();
+     CV.clear();
+   }
+   /*

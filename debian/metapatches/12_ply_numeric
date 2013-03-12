@@ -1,6 +1,0 @@
-From: Teemu Ikonen <tpikonen@gmail.com>
-Subject: Set LC_NUMERIC to "C"
-X-git-branch: p/ply_numeric
-
-Fixes reading of ascii float values in locales which use the comma as a
-float separator.

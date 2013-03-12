@@ -1,3 +1,0 @@
-version=3
-opts="uversionmangle=s/^(.)(.)([^\.]*)/\\1.\\2.\\3/,dversionmangle=s/\.dfsg\d+$//" \
-    http://sf.net/meshlab/MeshLabSrc_AllInc_v(\d\d\d.*)\.t[ar\.]*gz

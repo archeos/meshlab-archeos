@@ -1,5 +1,0 @@
-From: Teemu Ikonen <tpikonen@gmail.com>
-Subject: Fix overflowing array index in VCGlib
-X-git-branch: p/overflow
-
-Fixes also E-array-bounds error in Debian build log scanner.

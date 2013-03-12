@@ -1,0 +1,22 @@
+From: Romain Janvier <romain.janvier@hotmail.fr>
+Date: Thu, 14 Mar 2013 09:08:10 +0100
+Subject: Set LC_NUMERIC to "C"
+
+Adapatation of Teemu Ikonen <tpikonen@gmail.com>
+patch (without redundant std::). Still Needed ?
+
+ meshlab/src/meshlab/main.cpp |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
+
+--- a/meshlab/src/meshlab/main.cpp
++++ b/meshlab/src/meshlab/main.cpp
+@@ -31,6 +31,9 @@ int main(int argc, char *argv[])
+   QLocale::setDefault(QLocale::C);
+   QCoreApplication::setOrganizationName("VCG");
+   QCoreApplication::setApplicationName("MeshLab");
++
++  std::setlocale(LC_NUMERIC, "C");
++
+ 	
+ 		if(argc>1)	
+ 		{

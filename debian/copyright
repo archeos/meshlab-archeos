@@ -17,6 +17,7 @@ Source: http://sourceforge.net/projects/meshlab/files/meshlab/MeshLab%20v1.3.0/M
  meshlab/src/external/ann_1.1.1         In Debian.
  meshlab/src/external/bzip2-1.0.5       In Debian.
  meshlab/src/external/glew-1.5.1        In Debian.
+ meshlab/src/external/glew-1.7.0        In Debian.
  meshlab/src/external/inc               Not needed for Linux builds.
  meshlab/src/external/lib3ds-1.3.0      In Debian.
  meshlab/src/external/muparser_v130     In Debian.
@@ -28,7 +29,7 @@ Source: http://sourceforge.net/projects/meshlab/files/meshlab/MeshLab%20v1.3.0/M
  meshlab/src/meshlabplugins/edit_ocme   Unknown license, not needed.
  meshlab/src/meshlabplugins/edit_vase   Unknown license, not needed.
  vcglib/vcg/Eigen                       In Debian.
-
+ vcglib/eigenlib/                       In Debian
 Files: *
 Copyright: 2005-2009 Visual Computing Lab  ISTI - Italian National
  Research Council
@@ -201,6 +202,7 @@ Copyright: 2005-2009 Visual Computing Lab  ISTI - Italian National
 License: GPL-2+
 
 Files: debian/*
-Copyright: 2007-2011, Teemu Ikonen <tpikonen@gmail.com>
+Copyright: 2013, Romain Janvier <romain.janvier@hotmail.fr>
+ 2007-2011, Teemu Ikonen <tpikonen@gmail.com>
 License: GPL-2+
 

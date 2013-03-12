@@ -1,0 +1,38 @@
+From: Romain Janvier <romain.janvier@hotmail.fr>
+Date: Wed, 13 Mar 2013 17:40:23 +0100
+Subject: Use proper rpath
+
+Copy of Teemu Ikonen <tpikonen@gmail.com>
+original patch.
+
+---
+ meshlab/src/meshlab/meshlab.pro             |    2 +-
+ meshlab/src/meshlabserver/meshlabserver.pro |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/meshlab/src/meshlab/meshlab.pro b/meshlab/src/meshlab/meshlab.pro
+index 0e394b9..7bb976a 100644
+--- a/meshlab/src/meshlab/meshlab.pro
++++ b/meshlab/src/meshlab/meshlab.pro
+@@ -130,7 +130,7 @@ win32-g++:LIBS        	+= -L../external/lib/win32-gcc -L../distrib -lcommon
+ #}
+ 
+ linux-g++:LIBS += -L../external/lib/linux-g++ -ljhead -L../distrib -lcommon -lGLU -lGLEW
+-linux-g++:QMAKE_RPATHDIR += ../distrib
++linux-g++:QMAKE_RPATHDIR += /usr/lib/meshlab
+ 
+ # uncomment in your local copy only in emergency cases.
+ # We should never be too permissive
+diff --git a/meshlab/src/meshlabserver/meshlabserver.pro b/meshlab/src/meshlabserver/meshlabserver.pro
+index aa2f32e..152f35c 100644
+--- a/meshlab/src/meshlabserver/meshlabserver.pro
++++ b/meshlab/src/meshlabserver/meshlabserver.pro
+@@ -26,7 +26,7 @@ win32-msvc2008:  LIBS += -L../distrib -lcommon
+ win32-msvc2010:  LIBS += -L../distrib -lcommon
+ win32-g++:  LIBS += -L../distrib -lcommon
+ linux-g++:  LIBS += -L../distrib -lcommon -lGLEW
+-linux-g++:QMAKE_RPATHDIR += ../distrib
++linux-g++:QMAKE_RPATHDIR += /usr/lib/meshlab
+ #CONFIG (release,debug | release) {
+ #	win32-msvc2005:release:  LIBS += -L../common/release -lcommon
+ #	win32-msvc2008:release:  LIBS += -L../common/release -lcommon

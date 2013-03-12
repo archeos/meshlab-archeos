@@ -1,14 +1,14 @@
 Source: meshlab
 Section: graphics
 Priority: extra
-Maintainer: Teemu Ikonen <tpikonen@gmail.com>
-Vcs-Browser: http://git.debian.org/?p=debian-science/packages/meshlab.git
-Vcs-Git: http://git.debian.org/git/debian-science/packages/meshlab.git
-Build-Depends: debhelper (>= 9), lib3ds-dev (>=1.3.0), libglew-dev,
+Maintainer: Romain Janvier <romain.janvier@hotmail.fr>
+Vcs-Browser: https://github.com/archeos/meshlab-archeos.git
+Vcs-Git: git://github.com/archeos/meshlab-archeos.git
+Build-Depends: debhelper (>= 9.0.0), lib3ds-dev (>=1.3.0), libglew-dev,
  libqt4-dev, libqt4-opengl-dev, libbz2-dev, xsltproc, docbook-xsl,
- libqhull-dev, libmuparser-dev, libeigen2-dev
+ libqhull-dev, libmuparser-dev, libeigen3-dev
 Homepage: http://meshlab.sourceforge.net/
-Standards-Version: 3.9.3
+Standards-Version: 3.9.4
 
 Package: meshlab
 Architecture: any

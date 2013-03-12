@@ -1,0 +1,67 @@
+From: Romain Janvier <romain.janvier@hotmail.fr>
+Date: Thu, 14 Mar 2013 03:53:48 +0100
+Subject: FHS for plugins and shaders
+
+---
+ meshlab/src/common/pluginmanager.cpp                   |    4 ++--
+ meshlab/src/meshlabplugins/render_gdp/meshrender.cpp   |    2 +-
+ meshlab/src/meshlabplugins/render_gdp/shaderDialog.cpp |    2 +-
+ meshlab/src/meshlabplugins/render_rfx/render_rfx.cpp   |    2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/meshlab/src/common/pluginmanager.cpp b/meshlab/src/common/pluginmanager.cpp
+index d84c8fa..89c2fa1 100644
+--- a/meshlab/src/common/pluginmanager.cpp
++++ b/meshlab/src/common/pluginmanager.cpp
+@@ -62,10 +62,10 @@ PluginManager::~PluginManager()
+ 
+ void PluginManager::loadPlugins(RichParameterSet& defaultGlobal)
+ {
+-  pluginsDir=QDir(getPluginDirPath());
++  pluginsDir=QDir("/usr/lib/meshlab/plugins");
+   // without adding the correct library path in the mac the loading of jpg (done via qt plugins) fails
+   qApp->addLibraryPath(getPluginDirPath());
+-  qApp->addLibraryPath(getBaseDirPath());
++  qApp->addLibraryPath("/usr/lib/meshlab");
+   QStringList pluginfilters;
+ 
+   pluginfilters << QString("*." + DLLExtension());
+diff --git a/meshlab/src/meshlabplugins/render_gdp/meshrender.cpp b/meshlab/src/meshlabplugins/render_gdp/meshrender.cpp
+index 64dbcc3..c07998c 100644
+--- a/meshlab/src/meshlabplugins/render_gdp/meshrender.cpp
++++ b/meshlab/src/meshlabplugins/render_gdp/meshrender.cpp
+@@ -39,7 +39,7 @@ void MeshShaderRenderPlugin::initActionList() {
+ 	qaNone->setCheckable(false);
+ 	actionList << qaNone;*/
+ 
+-	QDir shadersDir = QDir(qApp->applicationDirPath());
++	QDir shadersDir = QDir("/usr/share/meshlab");
+ #if defined(Q_OS_WIN)
+ 	if (shadersDir.dirName() == "debug" || shadersDir.dirName() == "release" || shadersDir.dirName() == "plugins"  )
+ 		shadersDir.cdUp();
+diff --git a/meshlab/src/meshlabplugins/render_gdp/shaderDialog.cpp b/meshlab/src/meshlabplugins/render_gdp/shaderDialog.cpp
+index 9c45981..0256805 100644
+--- a/meshlab/src/meshlabplugins/render_gdp/shaderDialog.cpp
++++ b/meshlab/src/meshlabplugins/render_gdp/shaderDialog.cpp
+@@ -323,7 +323,7 @@ void ShaderDialog::changeTexturePath(int i) {
+ void ShaderDialog::browseTexturePath(int i) {
+ 	QFileDialog fd(0,"Choose new texture");
+ 
+-	QDir shadersDir = QDir(qApp->applicationDirPath());
++	QDir shadersDir = QDir("/usr/share/meshlab");
+ #if defined(Q_OS_WIN)
+ 	if (shadersDir.dirName() == "debug" || shadersDir.dirName() == "release")
+ 		shadersDir.cdUp();
+diff --git a/meshlab/src/meshlabplugins/render_rfx/render_rfx.cpp b/meshlab/src/meshlabplugins/render_rfx/render_rfx.cpp
+index e327cea..eb67fd2 100755
+--- a/meshlab/src/meshlabplugins/render_rfx/render_rfx.cpp
++++ b/meshlab/src/meshlabplugins/render_rfx/render_rfx.cpp
+@@ -55,7 +55,7 @@ QList<QAction*> RenderRFX::actions()
+ 
+ void RenderRFX::initActionList()
+ {
+-	QDir shadersDir = PluginManager::getBaseDirPath();
++	QDir shadersDir = QDir("/usr/share/meshlab");
+ 
+ #if defined(Q_OS_WIN)
+ 	if (shadersDir.dirName() == "debug"   ||

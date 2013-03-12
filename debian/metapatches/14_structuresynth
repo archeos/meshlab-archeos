@@ -1,8 +1,0 @@
-From: Teemu Ikonen <tpikonen@gmail.com>
-Subject: Include glu.h where needed in included structure-synth code.
-X-git-branch: p/structuresynth
-
-Also link structuresynth code with libGLU.
-
-This FTBS was exposed by GCC-4.7. See Debian bug #672000 for the same
-issue in the real structure-synth Debian package.

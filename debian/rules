@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-# -*- makefile -*-
+export DH_VERBOSE=1
 
 QMAKE_DPKG_BUILDFLAGS=\
  QMAKE_CFLAGS_RELEASE="$(shell dpkg-buildflags --get CFLAGS) $(shell dpkg-buildflags --get CPPFLAGS)" \
@@ -37,57 +37,31 @@ get-orig-source:
 	rm -rf $(TDIR)/meshlab/src/plugins_unsupported
 	# Eigen is already in Debian.
 	rm -rf $(TDIR)/vcglib/eigenlib
+	# Remove legacy Eigen2 too
+	rm -rf $(TDIR)/vcg/Eigen
 	#
 	tar -zcf meshlab-$(DEBVERSION).tar.gz $(TDIR)
 
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
-	cd meshlab/src/external ; qmake -spec linux-g++ -recursive external.pro $(QMAKE_DPKG_BUILDFLAGS)
-	cd meshlab/src ; qmake -spec linux-g++ -recursive meshlab_full.pro $(QMAKE_DPKG_BUILDFLAGS)
-	touch $@
+%:
+	dh $@
 
-build: build-arch build-indep
-build-arch: build-stamp
-build-indep: build-stamp
-build-stamp: configure-stamp
-	dh_testdir
-	$(MAKE) -C meshlab/src/external
-	$(MAKE) -C meshlab/src
-	touch $@
-
-clean:
-	dh clean
-	rm -f build-stamp configure-stamp
-	-rm -f meshlab/docs/meshlab.1.xml meshlab/docs/meshlabserver.1.xml
-	if [ -e meshlab/src/Makefile ] ; then $(MAKE) -C meshlab/src distclean ; fi
-	if [ -e meshlab/src/external/Makefile ] ; then $(MAKE) -C meshlab/src/external distclean ; fi
-	-rm -rf meshlab/src/external/lib/linux-g++
-	-rm meshlab/src/external/levmar-2.3/Makefile.levmar-2
-	-rm meshlab/src/external/structuresynth/Makefile.structuresynth
-	-rm meshlab/src/meshlab/plugins/*.so
-	-find ./ -name "Makefile" | xargs rm -f
-	-find ./ -name "Makefile.Debug" | xargs rm -f
-	-find ./ -name "Makefile.Release" | xargs rm -f
+override_dh_clean:
+	dh_clean
 	-mv 3Dlabs-license.txt meshlab/src/distrib/shaders
 	-mv LightworkDesign-license.txt meshlab/src/distrib/shaders
+
+override_dh_auto_configure:
+	-cd meshlab/src/external ; qmake -spec linux-g++ -recursive external.pro
+	-cd meshlab/src/ ; qmake -spec linux-g++ -recursive meshlab_full.pro
+
+override_dh_auto_build:
+	-$(MAKE) -C meshlab/src/external
+	-$(MAKE) -C meshlab/src
 
 override_dh_shlibdeps:
 	dh_shlibdeps -lusr/lib/meshlab
 
-install: build
-	dh_testdir
-	-mv meshlab/src/distrib/shaders/3Dlabs-license.txt .
-	-mv meshlab/src/distrib/shaders/LightworkDesign-license.txt .
-	dh install
-
-# Build architecture-independent files here.
-binary-indep: build install
-	dh binary-indep
-
-# Build architecture-dependent files here.
-binary-arch: build install
-	dh binary-arch
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure get-orig-source
+override_dh_install:
+	 -mv meshlab/src/distrib/shaders/3Dlabs-license.txt .
+	 -mv meshlab/src/distrib/shaders/LightworkDesign-license.txt .
+	 dh_install

@@ -1,3 +1,0 @@
-From: Teemu Ikonen <tpikonen@gmail.com>
-Subject: Hardcode pluginsDir to the correct path in Debian
-X-git-branch: p/pluginsdir

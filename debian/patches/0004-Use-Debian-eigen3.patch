@@ -1,0 +1,162 @@
+From: Romain Janvier <romain.janvier@hotmail.fr>
+Date: Wed, 13 Mar 2013 17:25:12 +0100
+Subject: Use Debian eigen3
+
+---
+ meshlab/src/meshlabplugins/filter_texture/filter_texture.cpp |    8 ++++----
+ meshlab/src/shared.pri                                       |    1 +
+ .../vcg/complex/algorithms/parametrization/poisson_solver.h  |    8 ++++----
+ vcglib/vcg/complex/algorithms/update/curvature_fitting.h     |   10 +++++-----
+ vcglib/vcg/complex/algorithms/update/fitmaps.h               |    8 ++++----
+ vcglib/vcg/math/eigen.h                                      |    8 ++++----
+ vcglib/vcg/math/polar_decomposition.h                        |    4 ++--
+ 7 files changed, 24 insertions(+), 23 deletions(-)
+
+--- a/meshlab/src/meshlabplugins/filter_texture/filter_texture.cpp
++++ b/meshlab/src/meshlabplugins/filter_texture/filter_texture.cpp
+@@ -23,10 +23,10 @@
+ #include <vcg/math/base.h>
+ #include <QtGui>
+ #define EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET
+-#include <eigenlib/Eigen/Sparse>
+-#include <eigenlib/Eigen/src/Sparse/SparseMatrix.h>
+-#include <eigenlib/Eigen/src/Sparse/DynamicSparseMatrix.h>
+-#include <eigenlib/unsupported/Eigen/SparseExtra>
++#include <Eigen/Sparse>
++#include <Eigen/SparseCore>
++//Eigen 3.1 => Dynamic is now in SparseExtra
++#include <unsupported/Eigen/SparseExtra>
+ 
+ #include <float.h>
+ #include <stdlib.h>
+--- a/meshlab/src/shared.pri
++++ b/meshlab/src/shared.pri
+@@ -34,6 +34,7 @@ win32-msvc2010:DEFINES += GLEW_STATIC _U
+ # CONFIG += warn_off
+ 
+ INCLUDEPATH  *= ../.. $$VCGDIR ../$$GLEWDIR/include
++INCLUDEPATH += /usr/include/eigen3/
+ DEPENDPATH += ../.. $$VCGDIR
+ 
+ # Uncomment these if you want to experiment with newer gcc compilers
+--- a/vcglib/vcg/complex/algorithms/parametrization/poisson_solver.h
++++ b/vcglib/vcg/complex/algorithms/parametrization/poisson_solver.h
+@@ -25,10 +25,10 @@
+ #define VCG_POISSON_SOLVER
+ 
+ #define EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET
+-#include <eigenlib/Eigen/Sparse>
+-#include <eigenlib/Eigen/src/Sparse/SparseMatrix.h>
+-#include <eigenlib/Eigen/src/Sparse/DynamicSparseMatrix.h>
+-#include <eigenlib/unsupported/Eigen/SparseExtra>
++#include <Eigen/Sparse>
++#include <Eigen/SparseCore>
++//in sparseExtra
++#include <unsupported/Eigen/SparseExtra>
+ 
+ #include <time.h>
+ #include <vcg/complex/allocate.h>
+--- a/vcglib/vcg/complex/algorithms/update/curvature_fitting.h
++++ b/vcglib/vcg/complex/algorithms/update/curvature_fitting.h
+@@ -41,11 +41,11 @@
+ #include <vcg/complex/algorithms/inertia.h>
+ #include <vcg/math/matrix33.h>
+ 
+-#include <eigenlib/Eigen/Core>
+-#include <eigenlib/Eigen/QR>
+-#include <eigenlib/Eigen/LU>
+-#include <eigenlib/Eigen/SVD>
+-#include <eigenlib/Eigen/Eigenvalues>
++#include <Eigen/Core>
++#include <Eigen/QR>
++#include <Eigen/LU>
++#include <Eigen/SVD>
++#include <Eigen/Eigenvalues>
+ // GG include
+ #include <vector>
+ #include <vcg/complex/algorithms/nring.h>
+--- a/vcglib/vcg/complex/algorithms/update/fitmaps.h
++++ b/vcglib/vcg/complex/algorithms/update/fitmaps.h
+@@ -37,10 +37,10 @@
+ #include <vcg/complex/algorithms/update/bounding.h>
+ #include "vcg/complex/algorithms/update/curvature_fitting.h"
+ 
+-#include <eigenlib/Eigen/Core>
+-#include <eigenlib/Eigen/QR>
+-#include <eigenlib/Eigen/LU>
+-#include <eigenlib/Eigen/SVD>
++#include <Eigen/Core>
++#include <Eigen/QR>
++#include <Eigen/LU>
++#include <Eigen/SVD>
+ 
+ #include <algorithm>
+ 
+--- a/vcglib/vcg/math/eigen.h
++++ b/vcglib/vcg/math/eigen.h
+@@ -53,10 +53,10 @@ struct ei_to_vcgtype;
+ }
+ 
+ #include "base.h"
+-#include "../../eigenlib/Eigen/LU"
+-#include "../../eigenlib/Eigen/Geometry"
+-#include "../../eigenlib/Eigen/Array"
+-#include "../../eigenlib/Eigen/Core"
++#include <Eigen/LU>
++#include <Eigen/Geometry>
++#include <Eigen/Array>
++#include <Eigen/Core>
+ 
+ // add support for unsigned char and short int
+ namespace Eigen {
+--- a/vcglib/vcg/math/polar_decomposition.h
++++ b/vcglib/vcg/math/polar_decomposition.h
+@@ -26,8 +26,8 @@
+ 
+ #include <vcg/math/matrix33.h>
+ #include <vcg/math/matrix44.h>
+-#include <eigenlib/Eigen/Dense>
+-#include <eigenlib/Eigen/SVD>
++#include <Eigen/Dense>
++#include <Eigen/SVD>
+ 
+ namespace vcg{
+ 
+--- a/vcglib/apps/sample/trimesh_diskparam/trimesh_diskparam.pro
++++ b/vcglib/apps/sample/trimesh_diskparam/trimesh_diskparam.pro
+@@ -1,9 +1,10 @@
+-#DEFINES += VCG_USE_EIGEN
++# DEFINES += VCG_USE_EIGEN
+ 
+ TARGET = trimesh_diskparam
+ DEPENDPATH += . ../../..
+ 
+ INCLUDEPATH += . ../../..
++INCLUDEPATH += /usr/include/eigen3/
+ 
+ CONFIG += console stl
+ TEMPLATE = app
+--- a/vcglib/apps/texdeci/texdeci.pro
++++ b/vcglib/apps/texdeci/texdeci.pro
+@@ -1,8 +1,9 @@
+-#DEFINES += VCG_USE_EIGEN
++# DEFINES += VCG_USE_EIGEN
+ TARGET = texdeci
+ #LIBPATH +=
+ DEPENDPATH += . ../..
+ INCLUDEPATH += . ../..
++INCLUDEPATH += /usr/include/eigen3/
+ CONFIG += console stl debug_and_release
+ TEMPLATE = app
+ HEADERS += 
+--- a/meshlab/src/general.pri
++++ b/meshlab/src/general.pri
+@@ -10,7 +10,7 @@ macx:QMAKE_CXX=clang++
+ # uncomment to try Eigen
+ # DEFINES += VCG_USE_EIGEN
+ # CONFIG += warn_off
+-
++INCLUDEPATH += /usr/include/eigen3/
+ 
+ #macx:QMAKE_CXX=g++-4.2
+ macx:QMAKE_CXX=clang++
