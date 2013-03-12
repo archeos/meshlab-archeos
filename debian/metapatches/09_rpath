@@ -1,0 +1,3 @@
+From: Teemu Ikonen <tpikonen@gmail.com>
+Subject: Use /usr/lib/meshlab as RPATH in binaries.
+X-git-branch: p/rpath

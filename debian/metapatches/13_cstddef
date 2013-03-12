@@ -1,0 +1,3 @@
+From: Teemu Ikonen <tpikonen@gmail.com>
+Subject: Include <cstddef> on files using offsetoff (closes: #625053)
+X-git-branch: p/cstddef

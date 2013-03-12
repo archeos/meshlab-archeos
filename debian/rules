@@ -1,0 +1,93 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+QMAKE_DPKG_BUILDFLAGS=\
+ QMAKE_CFLAGS_RELEASE="$(shell dpkg-buildflags --get CFLAGS) $(shell dpkg-buildflags --get CPPFLAGS)" \
+ QMAKE_CFLAGS_DEBUG="$(shell dpkg-buildflags --get CFLAGS) $(shell dpkg-buildflags --get CPPFLAGS)" \
+ QMAKE_CXXFLAGS_RELEASE="$(shell dpkg-buildflags --get CFLAGS) $(shell dpkg-buildflags --get CPPFLAGS)" \
+ QMAKE_CXXFLAGS_DEBUG="$(shell dpkg-buildflags --get CFLAGS) $(shell dpkg-buildflags --get CPPFLAGS)" \
+ QMAKE_LFLAGS_RELEASE="$(shell dpkg-buildflags --get LDFLAGS)" QMAKE_LFLAGS_DEBUG="$(shell dpkg-buildflags --get LDFLAGS)"
+
+DEBVERSION := 1.3.2
+TARBALL = MeshLabSrc_AllInc_v132.tgz
+TDIR = meshlab-$(DEBVERSION)
+get-orig-source:
+	mkdir $(TDIR)
+	wget http://qa.debian.org/watch/sf.php/meshlab/$(TARBALL)
+	tar -C $(TDIR) -zxf $(TARBALL)
+	rm -rf $(TDIR)/meshlab/src/distrib/render_template
+	# Remove external libraries which are in Debian or not used
+	rm -rf $(TDIR)/meshlab/src/external/ann_1.1.1
+	rm -rf $(TDIR)/meshlab/src/external/bzip2-1.0.5
+	rm -rf $(TDIR)/meshlab/src/external/glew-1.5.1
+	rm -rf $(TDIR)/meshlab/src/external/glew-1.7.0
+	rm -rf $(TDIR)/meshlab/src/external/inc
+	rm -rf $(TDIR)/meshlab/src/external/lib3ds-1.3.0
+	rm -rf $(TDIR)/meshlab/src/external/muparser_v130
+	rm -rf $(TDIR)/meshlab/src/external/muparser_v132
+	rm -rf $(TDIR)/meshlab/src/external/ode-0.11.1
+	rm -rf $(TDIR)/meshlab/src/external/openkinect
+	rm -rf $(TDIR)/meshlab/src/external/qhull-2003.1
+	rm -rf $(TDIR)/meshlab/src/external/tsai-30b3
+	# Remove unused plugins
+	rm -rf $(TDIR)/meshlab/src/meshlabplugins/edit_ocme
+	# Remove experimental and unsupported plugins, please
+	# file bugs if you need one of these
+	rm -rf $(TDIR)/meshlab/src/plugins_experimental
+	rm -rf $(TDIR)/meshlab/src/plugins_unsupported
+	# Eigen is already in Debian.
+	rm -rf $(TDIR)/vcglib/eigenlib
+	#
+	tar -zcf meshlab-$(DEBVERSION).tar.gz $(TDIR)
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	cd meshlab/src/external ; qmake -spec linux-g++ -recursive external.pro $(QMAKE_DPKG_BUILDFLAGS)
+	cd meshlab/src ; qmake -spec linux-g++ -recursive meshlab_full.pro $(QMAKE_DPKG_BUILDFLAGS)
+	touch $@
+
+build: build-arch build-indep
+build-arch: build-stamp
+build-indep: build-stamp
+build-stamp: configure-stamp
+	dh_testdir
+	$(MAKE) -C meshlab/src/external
+	$(MAKE) -C meshlab/src
+	touch $@
+
+clean:
+	dh clean
+	rm -f build-stamp configure-stamp
+	-rm -f meshlab/docs/meshlab.1.xml meshlab/docs/meshlabserver.1.xml
+	if [ -e meshlab/src/Makefile ] ; then $(MAKE) -C meshlab/src distclean ; fi
+	if [ -e meshlab/src/external/Makefile ] ; then $(MAKE) -C meshlab/src/external distclean ; fi
+	-rm -rf meshlab/src/external/lib/linux-g++
+	-rm meshlab/src/external/levmar-2.3/Makefile.levmar-2
+	-rm meshlab/src/external/structuresynth/Makefile.structuresynth
+	-rm meshlab/src/meshlab/plugins/*.so
+	-find ./ -name "Makefile" | xargs rm -f
+	-find ./ -name "Makefile.Debug" | xargs rm -f
+	-find ./ -name "Makefile.Release" | xargs rm -f
+	-mv 3Dlabs-license.txt meshlab/src/distrib/shaders
+	-mv LightworkDesign-license.txt meshlab/src/distrib/shaders
+
+override_dh_shlibdeps:
+	dh_shlibdeps -lusr/lib/meshlab
+
+install: build
+	dh_testdir
+	-mv meshlab/src/distrib/shaders/3Dlabs-license.txt .
+	-mv meshlab/src/distrib/shaders/LightworkDesign-license.txt .
+	dh install
+
+# Build architecture-independent files here.
+binary-indep: build install
+	dh binary-indep
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh binary-arch
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure get-orig-source
