@@ -1,6 +1,6 @@
 From: Romain Janvier <romain.janvier@hotmail.fr>
 Date: Wed, 13 Mar 2013 14:54:43 +0100
-Subject: Use Debian exteral
+Subject: Use Debian external
 
 ---
  meshlab/src/external/external.pro                  |    9 +++----

@@ -51,8 +51,8 @@ override_dh_clean:
 	-mv LightworkDesign-license.txt meshlab/src/distrib/shaders
 
 override_dh_auto_configure:
-	-cd meshlab/src/external ; qmake -spec linux-g++ -recursive external.pro
-	-cd meshlab/src/ ; qmake -spec linux-g++ -recursive meshlab_full.pro
+	-cd meshlab/src/external ; qmake -spec linux-g++ -recursive external.pro ${QMAKE_DPKG_BUILDFLAGS}
+	-cd meshlab/src/ ; qmake -spec linux-g++ -recursive meshlab_full.pro ${QMAKE_DPKG_BUILDFLAGS}
 
 override_dh_auto_build:
 	-$(MAKE) -C meshlab/src/external
